@@ -7,6 +7,17 @@ export const userController = {
     res.status(200).json(users);
   },
 
+  getUserById: (req: Request, res: Response): void => {
+    const { userId } = req.params;
+    const user = userService.getUserById(userId);
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+    res.status(200).json(user);
+  },
+
+
   createUser: (req: Request, res: Response): void => {
     const { username, age, hobbies } = req.body;
     if (!username || typeof age !== 'number' || !Array.isArray(hobbies)) {
