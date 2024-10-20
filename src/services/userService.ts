@@ -18,4 +18,7 @@ export const userService = {
     return newUser;
   },
 
+  updateUser: (id: string, username: string, age: number, hobbies: string[]): User | undefined => {
+    return db.updateUser(id, { username, age, hobbies });
+  },
 };
