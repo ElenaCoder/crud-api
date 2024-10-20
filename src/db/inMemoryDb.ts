@@ -8,4 +8,10 @@ export const db = {
   addUser: (user: User): void => {
     users.push(user);
   },
+  updateUser: (id: string, updatedUser: Partial<User>): User | undefined => {
+    const index = users.findIndex(user => user.id === id);
+    if (index === -1) return undefined;
+    users[index] = { ...users[index], ...updatedUser };
+    return users[index];
+  },
 };
