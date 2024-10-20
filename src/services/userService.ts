@@ -21,4 +21,6 @@ export const userService = {
   updateUser: (id: string, username: string, age: number, hobbies: string[]): User | undefined => {
     return db.updateUser(id, { username, age, hobbies });
   },
+
+  deleteUser: (id: string): boolean => db.deleteUser(id),
 };
