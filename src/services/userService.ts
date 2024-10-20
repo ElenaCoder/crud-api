@@ -5,6 +5,8 @@ import { db } from '../db/inMemoryDb';
 export const userService = {
   getAllUsers: (): User[] => db.getUsers(),
 
+  getUserById: (id: string): User | undefined => db.getUserById(id),
+
   createUser: (username: string, age: number, hobbies: string[]): User => {
     const newUser: User = {
       id: uuidv4(),
