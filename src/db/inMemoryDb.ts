@@ -14,4 +14,10 @@ export const db = {
     users[index] = { ...users[index], ...updatedUser };
     return users[index];
   },
+  deleteUser: (id: string): boolean => {
+    const index = users.findIndex(user => user.id === id);
+    if (index === -1) return false;
+    users.splice(index, 1);
+    return true;
+  },
 };
