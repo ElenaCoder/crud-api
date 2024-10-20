@@ -39,4 +39,14 @@ export const userController = {
     res.status(200).json(updatedUser);
   },
 
+
+  deleteUser: (req: Request, res: Response): void => {
+    const { userId } = req.params;
+    const isDeleted = userService.deleteUser(userId);
+    if (!isDeleted) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+    res.status(204).send();
+  },
 };
