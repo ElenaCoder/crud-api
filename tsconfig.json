@@ -4,7 +4,8 @@
       "module": "commonjs",
       "strict": true,
       "esModuleInterop": true,
-      "outDir": "./dist"
+      "outDir": "./dist",
+      "types": ["jest", "supertest", "node"],
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"]
