@@ -1,73 +1,106 @@
-```
-npm init -y
-npm install express dotenv uuid
-npm install -D typescript ts-node-dev eslint prettier @types/express @types/node
-```
+# CRUD API Assignment
 
-1. Create user:
+## Description
 
-```
-curl -X POST http://localhost:4000/api/users \
-     -H "Content-Type: application/json" \
-     -d '{
-           "username": "jane_doe",
-           "age": 30,
-           "hobbies": ["cooking", "painting", "cycling"]
-         }'
-```
-result: `{"id":"7ab77505-4288-4ec9-8196-78fa326296c5","username":"jane_doe","age":30,"hobbies":["cooking","painting","cycling"]}`
+This project is a simple **CRUD API** implemented using an in-memory database. It provides endpoints to create, read, update, and delete user records, with robust error handling for invalid requests and IDs.
 
-2. Delete user with `"id": "53aa0cc9-46a4-4194-ad9f-28658dd8e7b3"`:
+## Technical Requirements
 
-```
-curl -X DELETE http://localhost:4000/api/users/53aa0cc9-46a4-4194-ad9f-28658dd8e7b3
-```
-3. Create user:
+- **Language**: JavaScript or TypeScript
+- **Node.js Version**: 22.9.0 or higher
+- **Allowed Libraries**:
+  - `nodemon`, `dotenv`, `cross-env`, `typescript`, `ts-node`, `ts-node-dev`
+  - `eslint` and its plugins, `prettier`
+  - `webpack-cli`, `webpack` and its plugins
+  - `uuid`, `@types/*`
+  - Libraries used for testing (e.g., `jest`, `supertest`)
 
-```
-curl -X POST http://localhost:4000/api/users \
-     -H "Content-Type: application/json" \
-     -d '{
-           "username": "alex_smith",
-           "age": 22,
-           "hobbies": ["photography", "traveling", "coding"]
-         }'
-```
-result: `{"id":"da05cbf3-5a16-4697-aded-3d219aebfe4d","username":"alex_smith","age":22,"hobbies":["photography","traveling","coding"]}`
+## Endpoints
 
-4. Update user info with `"id":"da05cbf3-5a16-4697-aded-3d219aebfe4d"`:
+### `GET /api/users`
+- Retrieves all user records.
+- **Response**: `200 OK` with an array of user records.
 
-```
-curl -X PUT http://localhost:4000/api/users/da05cbf3-5a16-4697-aded-3d219aebfe4d \
-     -H "Content-Type: application/json" \
-     -d '{
-           "username": "alex_smith",
-           "age": 23,
-           "hobbies": ["photography", "traveling", "coding"]
-         }'
-```
-result: `-4f21-999f-79f1a20d98be{"id":"da05cbf3-5a16-4697-aded-3d219aebfe4d","username":"alex_smith","age":23,"hobbies":["photography","traveling","coding"
-]}`
+### `GET /api/users/{userId}`
+- Retrieves a user by their `userId`.
+- **Response**: 
+  - `200 OK` with the user record if it exists.
+  - `400 Bad Request` if `userId` is not a valid UUID.
+  - `404 Not Found` if no user with the given `userId` exists.
 
-5. Get all users:
+### `POST /api/users`
+- Creates a new user record.
+- **Request Body**:
+  ```json
+  {
+    "username": "string (required)",
+    "age": "number (required)",
+    "hobbies": ["array of strings (required)"]
+  }
+- **Response**:
+  -`201 Created` with the newly created user record.
+  -`400 Bad Request` if the request body lacks required fields.
 
-```
-curl -X GET http://localhost:4000/api/users
-```
+### `PUT /api/users/{userId}`
+- Updates an existing user by their `userId`.
+- **Request Body**:
+  ```json
+  {
+  "username": "string (required)",
+  "age": "number (required)",
+  "hobbies": ["array of strings (required)"]
+  }
+- **Response**:
+  -`200 OK` with the updated user record.
+  -`400 Bad Request` if userId is not a valid UUID or required fields are missing.
+  - `404 Not Found` if no user with the given `userId` exists.
 
-6. Get requests to non-existing endpoints.
-   Server should answer with status code 404 and corresponding human-friendly message
-```
-curl -i -X GET http://127.0.0.1:4000/some-non/existing/resource
-```
-response:
-```
-HTTP/1.1 404 Not Found
-X-Powered-By: Express
-Content-Type: application/json; charset=utf-8
-Content-Length: 32
-ETag: W/"20-vR0cOg1KTdb3FXDDvNw4n8id4AY"
-Date: Sun, 20 Oct 2024 18:50:42 GMT
-Connection: keep-alive
-Keep-Alive: timeout=5
-```
+### `DELETE /api/users/{userId}`
+- Deletes an existing user by their `userId`.
+- **Response**:
+  -`204 No Content` if the user was successfully deleted.
+  - `400 Bad Request` if userId is not a valid UUID.
+  - `404 Not Found` if no user with the given `userId` exists.
+
+## Error Handling
+
+1. Requests to non-existing endpoints should return: `404 Not Found` with a human-friendly message.
+2. Server errors should be handled gracefully: `500 Internal Server Error` with a human-friendly message.
+
+## User Data Model
+
+Users are stored as objects with the following properties:
+
+- **id**— A unique identifier (UUID) generated on the server side.
+- **username** — User's name (string, required).
+- **age** — User's age (number, required).
+- **hobbies** — User's hobbies (array of strings, required).
+
+## Environment Variables
+
+Store the application port in a .env file: `PORT=4000`
+
+## Running the Application
+
+### Development Mode
+
+Uses nodemon or ts-node-dev for hot-reloading during development.
+Start the app in development mode: `npm run start:dev`
+
+## Build
+
+To compile the TypeScript code into JavaScript, run the following command: `npm run build`.
+This will use the tsc command to transpile your TypeScript files into JavaScript and output them into the dist directory.
+
+### Production Mode
+
+Bundles the application using webpack and then runs the compiled file.
+Start the app in production mode: `npm run start:prod`
+
+## Testing with Jest
+
+Run Tests: `npx jest`.
+
+## License
+
+This project is licensed under the MIT License.
